@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.staff.mapper.ChangesMapper">
+    
+    <resultMap type="Changes" id="ChangesResult">
+        <result property="changeId"    column="change_id"    />
+        <result property="staffId"    column="staff_id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="natureId"    column="nature_id"    />
+        <result property="typeId"    column="type_id"    />
+        <result property="changeDate"    column="change_date"    />
+        <result property="changeRemarks"    column="change_remarks"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectChangesVo">
+        select change_id, staff_id, company_id, nature_id, type_id, change_date, change_remarks, status, create_by, create_time, update_by, update_time, remark from changes
+    </sql>
+
+    <select id="selectChangesList" parameterType="Changes" resultMap="ChangesResult">
+        <include refid="selectChangesVo"/>
+        <where>  
+            <if test="staffId != null "> and staff_id = #{staffId}</if>
+            <if test="companyId != null "> and company_id = #{companyId}</if>
+            <if test="natureId != null "> and nature_id = #{natureId}</if>
+            <if test="typeId != null "> and type_id = #{typeId}</if>
+            <if test="changeDate != null "> and change_date = #{changeDate}</if>
+            <if test="changeRemarks != null  and changeRemarks != ''"> and change_remarks = #{changeRemarks}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectChangesByChangeId" parameterType="Long" resultMap="ChangesResult">
+        <include refid="selectChangesVo"/>
+        where change_id = #{changeId}
+    </select>
+        
+    <insert id="insertChanges" parameterType="Changes" useGeneratedKeys="true" keyProperty="changeId">
+        insert into changes
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="staffId != null">staff_id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="natureId != null">nature_id,</if>
+            <if test="typeId != null">type_id,</if>
+            <if test="changeDate != null">change_date,</if>
+            <if test="changeRemarks != null">change_remarks,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="staffId != null">#{staffId},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="natureId != null">#{natureId},</if>
+            <if test="typeId != null">#{typeId},</if>
+            <if test="changeDate != null">#{changeDate},</if>
+            <if test="changeRemarks != null">#{changeRemarks},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateChanges" parameterType="Changes">
+        update changes
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="staffId != null">staff_id = #{staffId},</if>
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="natureId != null">nature_id = #{natureId},</if>
+            <if test="typeId != null">type_id = #{typeId},</if>
+            <if test="changeDate != null">change_date = #{changeDate},</if>
+            <if test="changeRemarks != null">change_remarks = #{changeRemarks},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where change_id = #{changeId}
+    </update>
+
+    <delete id="deleteChangesByChangeId" parameterType="Long">
+        delete from changes where change_id = #{changeId}
+    </delete>
+
+    <delete id="deleteChangesByChangeIds" parameterType="String">
+        delete from changes where change_id in 
+        <foreach item="changeId" collection="array" open="(" separator="," close=")">
+            #{changeId}
+        </foreach>
+    </delete>
+</mapper>

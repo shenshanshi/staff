@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.staff.mapper.EmploymentNatureMapper">
+    
+    <resultMap type="EmploymentNature" id="EmploymentNatureResult">
+        <result property="natureId"    column="nature_id"    />
+        <result property="natureName"    column="nature_name"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectEmploymentNatureVo">
+        select nature_id, nature_name, status, create_by, create_time, update_by, update_time, remark from employment_nature
+    </sql>
+
+    <select id="selectEmploymentNatureList" parameterType="EmploymentNature" resultMap="EmploymentNatureResult">
+        <include refid="selectEmploymentNatureVo"/>
+        <where>  
+            <if test="natureName != null  and natureName != ''"> and nature_name like concat('%', #{natureName}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectEmploymentNatureByNatureId" parameterType="Long" resultMap="EmploymentNatureResult">
+        <include refid="selectEmploymentNatureVo"/>
+        where nature_id = #{natureId}
+    </select>
+        
+    <insert id="insertEmploymentNature" parameterType="EmploymentNature" useGeneratedKeys="true" keyProperty="natureId">
+        insert into employment_nature
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="natureName != null">nature_name,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="natureName != null">#{natureName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEmploymentNature" parameterType="EmploymentNature">
+        update employment_nature
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="natureName != null">nature_name = #{natureName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where nature_id = #{natureId}
+    </update>
+
+    <delete id="deleteEmploymentNatureByNatureId" parameterType="Long">
+        delete from employment_nature where nature_id = #{natureId}
+    </delete>
+
+    <delete id="deleteEmploymentNatureByNatureIds" parameterType="String">
+        delete from employment_nature where nature_id in 
+        <foreach item="natureId" collection="array" open="(" separator="," close=")">
+            #{natureId}
+        </foreach>
+    </delete>
+</mapper>

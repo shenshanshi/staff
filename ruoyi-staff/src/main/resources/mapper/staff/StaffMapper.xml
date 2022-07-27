@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.staff.mapper.StaffMapper">
+    
+    <resultMap type="Staff" id="StaffResult">
+        <result property="staffId"    column="staff_id"    />
+        <result property="staffName"    column="staff_name"    />
+        <result property="manpowernumber"    column="manpowernumber"    />
+        <result property="sex"    column="sex"    />
+        <result property="educationalbackground"    column="educationalbackground"    />
+        <result property="graduationschool"    column="graduationschool"    />
+        <result property="entrytime"    column="entrytime"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="ispartymember"    column="ispartymember"    />
+        <result property="personnelcode"    column="personnelcode"    />
+        <result property="occupationId"    column="occupation_id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectStaffVo">
+        select staff_id, staff_name, manpowernumber, sex, educationalbackground, graduationschool, entrytime, birthday, ispartymember, personnelcode, occupation_id, company_id, status, create_by, create_time, update_by, update_time, remark from staff
+    </sql>
+
+    <select id="selectStaffList" parameterType="Staff" resultMap="StaffResult">
+        <include refid="selectStaffVo"/>
+        <where>  
+            <if test="staffName != null  and staffName != ''"> and staff_name like concat('%', #{staffName}, '%')</if>
+            <if test="manpowernumber != null  and manpowernumber != ''"> and manpowernumber = #{manpowernumber}</if>
+            <if test="sex != null "> and sex = #{sex}</if>
+            <if test="educationalbackground != null  and educationalbackground != ''"> and educationalbackground = #{educationalbackground}</if>
+            <if test="graduationschool != null  and graduationschool != ''"> and graduationschool = #{graduationschool}</if>
+            <if test="entrytime != null "> and entrytime = #{entrytime}</if>
+            <if test="birthday != null "> and birthday = #{birthday}</if>
+            <if test="ispartymember != null  and ispartymember != ''"> and ispartymember = #{ispartymember}</if>
+            <if test="personnelcode != null  and personnelcode != ''"> and personnelcode = #{personnelcode}</if>
+            <if test="occupationId != null "> and occupation_id = #{occupationId}</if>
+            <if test="companyId != null "> and company_id = #{companyId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectStaffByStaffId" parameterType="Long" resultMap="StaffResult">
+        <include refid="selectStaffVo"/>
+        where staff_id = #{staffId}
+    </select>
+        
+    <insert id="insertStaff" parameterType="Staff" useGeneratedKeys="true" keyProperty="staffId">
+        insert into staff
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="staffName != null">staff_name,</if>
+            <if test="manpowernumber != null">manpowernumber,</if>
+            <if test="sex != null">sex,</if>
+            <if test="educationalbackground != null">educationalbackground,</if>
+            <if test="graduationschool != null">graduationschool,</if>
+            <if test="entrytime != null">entrytime,</if>
+            <if test="birthday != null">birthday,</if>
+            <if test="ispartymember != null">ispartymember,</if>
+            <if test="personnelcode != null">personnelcode,</if>
+            <if test="occupationId != null">occupation_id,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="staffName != null">#{staffName},</if>
+            <if test="manpowernumber != null">#{manpowernumber},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="educationalbackground != null">#{educationalbackground},</if>
+            <if test="graduationschool != null">#{graduationschool},</if>
+            <if test="entrytime != null">#{entrytime},</if>
+            <if test="birthday != null">#{birthday},</if>
+            <if test="ispartymember != null">#{ispartymember},</if>
+            <if test="personnelcode != null">#{personnelcode},</if>
+            <if test="occupationId != null">#{occupationId},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStaff" parameterType="Staff">
+        update staff
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="staffName != null">staff_name = #{staffName},</if>
+            <if test="manpowernumber != null">manpowernumber = #{manpowernumber},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="educationalbackground != null">educationalbackground = #{educationalbackground},</if>
+            <if test="graduationschool != null">graduationschool = #{graduationschool},</if>
+            <if test="entrytime != null">entrytime = #{entrytime},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="ispartymember != null">ispartymember = #{ispartymember},</if>
+            <if test="personnelcode != null">personnelcode = #{personnelcode},</if>
+            <if test="occupationId != null">occupation_id = #{occupationId},</if>
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where staff_id = #{staffId}
+    </update>
+
+    <delete id="deleteStaffByStaffId" parameterType="Long">
+        delete from staff where staff_id = #{staffId}
+    </delete>
+
+    <delete id="deleteStaffByStaffIds" parameterType="String">
+        delete from staff where staff_id in 
+        <foreach item="staffId" collection="array" open="(" separator="," close=")">
+            #{staffId}
+        </foreach>
+    </delete>
+</mapper>

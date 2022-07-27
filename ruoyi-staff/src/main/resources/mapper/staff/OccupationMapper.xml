@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.staff.mapper.OccupationMapper">
+    
+    <resultMap type="Occupation" id="OccupationResult">
+        <result property="occupationId"    column="occupation_id"    />
+        <result property="occupationName"    column="occupation_name"    />
+        <result property="armsexpansionId"    column="armsexpansion_id"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectOccupationVo">
+        select occupation_id, occupation_name, armsexpansion_id, status, create_by, create_time, update_by, update_time, remark from occupation
+    </sql>
+
+    <select id="selectOccupationList" parameterType="Occupation" resultMap="OccupationResult">
+        <include refid="selectOccupationVo"/>
+        <where>  
+            <if test="occupationName != null  and occupationName != ''"> and occupation_name like concat('%', #{occupationName}, '%')</if>
+            <if test="armsexpansionId != null "> and armsexpansion_id = #{armsexpansionId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectOccupationByOccupationId" parameterType="Long" resultMap="OccupationResult">
+        <include refid="selectOccupationVo"/>
+        where occupation_id = #{occupationId}
+    </select>
+        
+    <insert id="insertOccupation" parameterType="Occupation" useGeneratedKeys="true" keyProperty="occupationId">
+        insert into occupation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="occupationName != null">occupation_name,</if>
+            <if test="armsexpansionId != null">armsexpansion_id,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="occupationName != null">#{occupationName},</if>
+            <if test="armsexpansionId != null">#{armsexpansionId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOccupation" parameterType="Occupation">
+        update occupation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="occupationName != null">occupation_name = #{occupationName},</if>
+            <if test="armsexpansionId != null">armsexpansion_id = #{armsexpansionId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where occupation_id = #{occupationId}
+    </update>
+
+    <delete id="deleteOccupationByOccupationId" parameterType="Long">
+        delete from occupation where occupation_id = #{occupationId}
+    </delete>
+
+    <delete id="deleteOccupationByOccupationIds" parameterType="String">
+        delete from occupation where occupation_id in 
+        <foreach item="occupationId" collection="array" open="(" separator="," close=")">
+            #{occupationId}
+        </foreach>
+    </delete>
+</mapper>
